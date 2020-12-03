@@ -24,14 +24,18 @@ syntax:
   # Manually Configured Syntax Section.
   identifier_quote: '"'
   identifier_length_limit: 128
-  allows_boolean_literal: false
+  allows_boolean_literal: true
   map_boolean_literal_to_bit: false
-  supports_catalogs: false
-  supports_schemas: false
+  supports_catalogs: true
+  supports_schemas: true
 
 data_types:
   mappings:
   # Manually Configured Data Types Mappings Section.
+  - source:
+      name: "BOOLEAN"
+    dremio:
+      name: "boolean"
   - source:
       name: "INTEGER"
     dremio:
@@ -42,7 +46,7 @@ data_types:
       name: "timestamp"
     default_cast_spec: true
   - source:
-      name: "LONG"
+      name: "BIGINT"
     dremio:
       name: "bigint"
   - source:
@@ -57,6 +61,7 @@ data_types:
       name: "DECIMAL"
     dremio:
       name: "decimal"
+    required_cast_args: "precision_scale"
   - source:
       name: "DATE"
     dremio:
@@ -193,11 +198,15 @@ expressions:
         - "integer"
         return: "boolean"
       - args:
+        - "integer"
+        - "double"
+        return: "boolean"
+      - args:
         - "double"
         - "varchar"
         return: "boolean"
       - args:
-        - "integer"
+        - "varchar"
         - "double"
         return: "boolean"
       - args:
@@ -205,7 +214,39 @@ expressions:
         - "integer"
         return: "boolean"
       - args:
+        - "bigint"
+        - "bigint"
+        return: "boolean"
+      - args:
         - "integer"
+        - "varchar"
+        return: "boolean"
+      - args:
+        - "varchar"
+        - "integer"
+        return: "boolean"
+      - args:
+        - "integer"
+        - "bigint"
+        return: "boolean"
+      - args:
+        - "bigint"
+        - "integer"
+        return: "boolean"
+      - args:
+        - "double"
+        - "bigint"
+        return: "boolean"
+      - args:
+        - "bigint"
+        - "double"
+        return: "boolean"
+      - args:
+        - "varchar"
+        - "bigint"
+        return: "boolean"
+      - args:
+        - "bigint"
         - "varchar"
         return: "boolean"
       - args:
