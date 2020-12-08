@@ -76,7 +76,7 @@ public class SparkConf extends AbstractArpConf<SparkConf> {
 
   @Tag(6)
   @NotMetadataImpacting
-  @DisplayMetadata(label = "Grant External Query access (External Query allows creation of VDS from a Snowflake query. Learn more here: https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)")
+  @DisplayMetadata(label = "Grant External Query access (External Query allows creation of VDS from a Spark SQL query. Learn more here: https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)")
   public boolean enableExternalQuery = false;
 
   @Tag(7)
