@@ -56,6 +56,9 @@
                   "position": "bottom",
                   "text": "Set to 0 to have Dremio automatically decide."
                 }
+              },
+              {
+                "propName": "config.enableExternalQuery"
               }
             ]
           }
