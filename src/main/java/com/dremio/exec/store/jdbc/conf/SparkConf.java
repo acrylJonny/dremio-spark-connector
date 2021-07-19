@@ -31,6 +31,7 @@ import com.dremio.security.CredentialsService;
 import com.dremio.exec.store.jdbc.CloseableDataSource;
 import com.dremio.exec.store.jdbc.DataSources;
 import com.dremio.exec.store.jdbc.JdbcPluginConfig;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
 import com.google.common.annotations.VisibleForTesting;
 
@@ -39,7 +40,7 @@ import io.protostuff.Tag;
 /**
  * Configuration for Spark sources.
  */
-@SourceType(value = "SPARK", label = "Databricks Spark", uiConfig = "spark-layout.json")
+@SourceType(value = "SPARK", label = "Databricks Spark", uiConfig = "spark-layout.json", externalQuerySupported = true)
 public class SparkConf extends AbstractArpConf<SparkConf> {
   private static final String ARP_FILENAME = "arp/implementation/spark-arp.yaml";
   private static final ArpDialect ARP_DIALECT =
@@ -76,12 +77,24 @@ public class SparkConf extends AbstractArpConf<SparkConf> {
   @Tag(6)
   @NotMetadataImpacting
   @DisplayMetadata(label = "Grant External Query access (External Query allows creation of VDS from a Spark SQL query. Learn more here: https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)")
+  @JsonIgnore
   public boolean enableExternalQuery = false;
 
   @Tag(7)
   @DisplayMetadata(label = "Record fetch size")
   @NotMetadataImpacting
   public int fetchSize = 500;
+
+  @Tag(8)
+  @DisplayMetadata(label = "Maximum idle connections")
+  @NotMetadataImpacting
+  public int maxIdleConns = 8;
+
+  @Tag(9)
+  @DisplayMetadata(label = "Connection idle time (s)")
+  @NotMetadataImpacting
+  public int idleTimeSec = 60;
+
 
   public SparkConf() {
   }
@@ -125,7 +138,9 @@ public class SparkConf extends AbstractArpConf<SparkConf> {
     "token",
     password,
     properties,
-    DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
+    DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE,
+    maxIdleConns,
+    idleTimeSec);
 }
 
   @Override
